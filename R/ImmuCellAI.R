@@ -314,7 +314,24 @@ result_layer<-function(result_mat,group_tag,response_tag){
 
 
 
-ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,customer=0,sig_file=NULL,exp_file=NULL){
+ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,group_content=NULL,customer=0,sig_file=NULL,exp_file=NULL){
+    if (group_tag == 1){
+        if (is.null(group_content)) {
+            stop("group_content file error")
+        }
+        tryCatch({
+            if (!all(group_content[,1] == colnames(sample) )) {
+                stop("group_content file error")
+            }
+            }, warning = function(w){
+                stop(w)
+            }, error = function(e){
+                stop(e)
+            }
+        )
+    group_content = group_content[,2]
+    names(group_content) <- colnames(sample)
+    }
     data("marker_exp")
     data("paper_marker")
     data("compensation_matrix")
@@ -338,9 +355,7 @@ ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,customer=0,sig_
     layer1_abun_normlized<-apply(layer1_abun[,-11],1,function(x) (x/sum(x)))
     layer1_abun_normlized<-rbind(layer1_abun_normlized,layer1_abun[,11])
     row.names(layer1_abun_normlized)[11]=colnames(layer1_abun)[11]
-    if (group_tag){
-      group_content<<-sample[1,]
-    }
+
     layer2_abun_normlized<-apply(layer2_abun,1,function(x) (x/sum(x)))
 
     CD4_sub<-c("CD4_naive","Tr1","nTreg","iTreg","Th1","Th2","Th17","Tfh")
@@ -360,5 +375,7 @@ ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,customer=0,sig_
 
     all_norm=rbind(layer1_abun_normlized,CD4_sub_all,CD8_sub_all,Central_memory,Effector_memory)
     result_layer(t(round(all_norm,3)),group_tag,response_tag)
+    group_fre <- t(group_fre)
+    colnames(group_fre) <- c(colnames(group_fre)[-ncol(Group_result)],"p_value")                           
     return(list(Sample_abundance=T_FRE, Group_result=group_fre, Response=ICB_response))
 }
