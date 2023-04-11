@@ -16,6 +16,7 @@ install_github("lydiaMyr/ImmuCellAI@main")
 #sample_expression: Sample expression profile in FPKM, TPM format by RNA-seq or log2-transformed signal by microarray.
 #datatype: One of "rnaseq" and "microarray"
 #group_tag: One of 0 and 1, if there is the need to perform the comparision between different groups. If the value is 1, users need to add a group tag row in the input epxression matrix to explain the group of each sample.
+#group_content: If group_tag is set to 1, sample id must be in the first column, group info must be in the secound column.
 #response_tag: One of 0 and 1, if there is the need to predict the ICB response of each sample.
 
 ImmuCellAI_new(sample_expression,data_type,group_tag,response_tag)
