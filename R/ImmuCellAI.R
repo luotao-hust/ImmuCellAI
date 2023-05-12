@@ -376,7 +376,9 @@ ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,group_content=N
 
     all_norm=rbind(layer1_abun_normlized,CD4_sub_all,CD8_sub_all,Central_memory,Effector_memory)
     result_layer(t(round(all_norm,3)),group_tag,response_tag)
-    group_fre <- t(group_fre)
-    colnames(group_fre) <- c(colnames(group_fre)[-ncol(group_fre)],"p_value")                           
+    if (group_tag == 1) {
+        group_fre <- t(group_fre)
+        colnames(group_fre) <- c(colnames(group_fre)[-ncol(group_fre)],"p_value")
+    }
     return(list(Sample_abundance=T_FRE, Group_result=group_fre, Response=ICB_response))
 }
