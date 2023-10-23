@@ -6,6 +6,7 @@ ImmuCellAI (Immune Cell Abundance Identifier, http://bioinfo.life.hust.edu.cn/Im
 install.packages("devtools")
 library(devtools)
 install_github("lydiaMyr/ImmuCellAI@main")
+# devtools::install_github("luotao-hust/ImmuCellAI@luotao-hust-patch-1")
 #if the "/bin/gtar: not found" error occured, please run the following command "export TAR="/bin/tar" before installation.
 ```
 ## Geting started
